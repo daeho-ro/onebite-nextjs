@@ -1,6 +1,7 @@
+import SearchBar from '@/components/search-bar';
 import { useRouter } from 'next/router';
 
-export default function Home() {
+export default function Search() {
   const router = useRouter();
   const { q } = router.query;
 
@@ -10,3 +11,7 @@ export default function Home() {
     </>
   );
 }
+
+Search.getLayout = function getLayout(page: React.ReactElement) {
+  return <SearchBar>{page}</SearchBar>;
+};
