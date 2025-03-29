@@ -1,13 +1,14 @@
-import { useRouter } from 'next/router';
-import movies from '@/mock/movies.json';
 import style from '@/pages/movie/[id].module.css';
+import fetchOneMovie from '@/lib/fetch-one-movie';
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 
-export default function Home() {
-  const router = useRouter();
-  const { id } = router.query;
+export const getServerSideProps = async (context: GetServerSidePropsContext) => {
+  const id = context.params?.id as string;
+  const movie = await fetchOneMovie(Number(id));
+  return { props: { movie } };
+};
 
-  const movie = movies.find((movie) => movie.id === Number(id));
-
+export default function Movie({ movie }: Readonly<InferGetServerSidePropsType<typeof getServerSideProps>>) {
   if (!movie) {
     return <div>존재하지 않는 영화입니다.</div>;
   }

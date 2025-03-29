@@ -1,18 +1,19 @@
 import SearchBar from '@/components/search-bar';
-import { useRouter } from 'next/router';
-import movies from '@/mock/movies.json';
 import MovieItem from '@/components/movie-item';
 import style from './search.module.css';
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
+import fetchMovie from '@/lib/fetch-movie';
 
-export default function Search() {
-  const router = useRouter();
+export const getServerSideProps = async (context: GetServerSidePropsContext) => {
+  const q = context.query.q as string;
+  const movies = await fetchMovie(q);
+  return { props: { movies } };
+};
 
-  const q = router.query.q as string;
-  const searchMovies = movies.filter((movie) => movie.title.includes(q));
-
+export default function Search({ movies }: Readonly<InferGetServerSidePropsType<typeof getServerSideProps>>) {
   return (
     <div className={style.searchList}>
-      {searchMovies.map((movie) => (
+      {movies.map((movie) => (
         <MovieItem key={movie.id} {...movie} />
       ))}
     </div>

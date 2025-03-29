@@ -1,10 +1,23 @@
 import SearchBar from '@/components/search-bar';
 import MovieItem from '@/components/movie-item';
-import movies from '@/mock/movies.json';
 import style from './index.module.css';
+import fetchRandomMovies from '@/lib/fetch-random-movie';
+import fetchMovie from '@/lib/fetch-movie';
+import { InferGetServerSidePropsType } from 'next';
 
-export default function Home() {
-  const recommendMovies = movies.toSorted((a, b) => a.runtime - b.runtime).slice(0, 3);
+export const getServerSideProps = async () => {
+  const [recoMovies, allMovies] = await Promise.all([fetchRandomMovies(), fetchMovie()]);
+
+  return {
+    props: { recoMovies, allMovies },
+  };
+};
+
+export default function Home({
+  recoMovies,
+  allMovies,
+}: Readonly<InferGetServerSidePropsType<typeof getServerSideProps>>) {
+  const recommendMovies = recoMovies.toSorted((a, b) => a.runtime - b.runtime).slice(0, 3);
 
   return (
     <div className={style.container}>
@@ -19,7 +32,7 @@ export default function Home() {
       <section>
         <h3>등록된 모든 영화</h3>
         <div className={style.movieList}>
-          {movies.map((movie) => (
+          {allMovies.map((movie) => (
             <MovieItem key={`all-${movie.id}`} {...movie} />
           ))}
         </div>
