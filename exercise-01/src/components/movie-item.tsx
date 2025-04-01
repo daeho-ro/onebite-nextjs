@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { MovieData } from '@/types';
 import style from './movie-item.module.css';
 
-export default function MovieItem({ id, title, posterImgUrl }: MovieData, col: number) {
+export default function MovieItem({ id, title, posterImgUrl }: MovieData) {
   return (
     <div>
       <Link href={`/movie/${id}`}>

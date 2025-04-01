@@ -1,14 +1,23 @@
 import style from '@/pages/movie/[id].module.css';
 import fetchOneMovie from '@/lib/fetch-one-movie';
-import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
+import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
+import fetchMovie from '@/lib/fetch-movie';
 
-export const getServerSideProps = async (context: GetServerSidePropsContext) => {
+export const getStaticPaths = async () => {
+  const movies = await fetchMovie();
+  return {
+    paths: movies.map((movie) => ({ params: { id: movie.id.toString() } })),
+    fallback: true,
+  };
+};
+
+export const getStaticProps = async (context: GetStaticPropsContext) => {
   const id = context.params?.id as string;
   const movie = await fetchOneMovie(Number(id));
   return { props: { movie } };
 };
 
-export default function Movie({ movie }: Readonly<InferGetServerSidePropsType<typeof getServerSideProps>>) {
+export default function Movie({ movie }: Readonly<InferGetStaticPropsType<typeof getStaticProps>>) {
   if (!movie) {
     return <div>존재하지 않는 영화입니다.</div>;
   }

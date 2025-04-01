@@ -1,16 +1,27 @@
 import SearchBar from '@/components/search-bar';
 import MovieItem from '@/components/movie-item';
 import style from './search.module.css';
-import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
+import { useEffect, useState } from 'react';
+import { MovieData } from '@/types';
+import { useRouter } from 'next/router';
 import fetchMovie from '@/lib/fetch-movie';
 
-export const getServerSideProps = async (context: GetServerSidePropsContext) => {
-  const q = context.query.q as string;
-  const movies = await fetchMovie(q);
-  return { props: { movies } };
-};
+export default function Search() {
+  const [movies, setMovies] = useState<MovieData[]>([]);
+  const router = useRouter();
+  const q = router.query.q;
 
-export default function Search({ movies }: Readonly<InferGetServerSidePropsType<typeof getServerSideProps>>) {
+  const fetchSearchResults = async () => {
+    const data = await fetchMovie(q as string);
+    setMovies(data);
+  };
+
+  useEffect(() => {
+    if (q) {
+      fetchSearchResults();
+    }
+  }, [q]);
+
   return (
     <div className={style.searchList}>
       {movies.map((movie) => (

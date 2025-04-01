@@ -3,9 +3,9 @@ import MovieItem from '@/components/movie-item';
 import style from './index.module.css';
 import fetchRandomMovies from '@/lib/fetch-random-movie';
 import fetchMovie from '@/lib/fetch-movie';
-import { InferGetServerSidePropsType } from 'next';
+import { InferGetStaticPropsType } from 'next';
 
-export const getServerSideProps = async () => {
+export const getStaticProps = async () => {
   const [recoMovies, allMovies] = await Promise.all([fetchRandomMovies(), fetchMovie()]);
 
   return {
@@ -16,7 +16,7 @@ export const getServerSideProps = async () => {
 export default function Home({
   recoMovies,
   allMovies,
-}: Readonly<InferGetServerSidePropsType<typeof getServerSideProps>>) {
+}: Readonly<InferGetStaticPropsType<typeof getStaticProps>>) {
   const recommendMovies = recoMovies.toSorted((a, b) => a.runtime - b.runtime).slice(0, 3);
 
   return (
