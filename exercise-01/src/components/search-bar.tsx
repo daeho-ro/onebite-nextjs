@@ -8,7 +8,6 @@ export default function SearchBar({ children }: { children: React.ReactNode }) {
   const q = router.query.q as string;
 
   useEffect(() => {
-    console.log(q);
     setSearch(q || '');
   }, [q]);
 
