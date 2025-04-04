@@ -1,4 +1,4 @@
-import SearchBar from "./searchbar";
+import SearchBar from '@/components/search-bar';
 
 export default function Layout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (

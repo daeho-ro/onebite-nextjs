@@ -1,4 +1,13 @@
-export default async function Search({ searchParams }: { searchParams: Promise<{ q: string }> }) {
-  const { q } = await searchParams;
-  return <div>검색 페이지 : {q}</div>;
+import MovieItem from '@/components/movie-item';
+import style from './page.module.css';
+import movies from '@/dummy.json';
+
+export default function Search() {
+  return (
+    <div className={style.searchList}>
+      {movies.map((movie) => (
+        <MovieItem key={movie.id} {...movie} />
+      ))}
+    </div>
+  );
 }
