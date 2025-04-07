@@ -1,8 +1,23 @@
 import style from './page.module.css';
-import movies from '@/dummy.json';
+import { MovieData } from '@/types';
 
-export default function Movie() {
-  const { title, releaseDate, company, genres, subTitle, description, runtime, posterImgUrl } = movies[3];
+export default async function Movie({
+  params,
+}: Readonly<{
+  params: Promise<{
+    id: string;
+  }>;
+}>) {
+  const { id } = await params;
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/movie/${id}`, {
+    cache: 'force-cache',
+  });
+  const movie: MovieData = await response.json();
+  const { title, releaseDate, company, genres, subTitle, description, runtime, posterImgUrl } = movie;
+
+  if (!response.ok) {
+    return <div>영화를 불러오는데 실패했습니다.</div>;
+  }
 
   return (
     <div className={style.container}>
