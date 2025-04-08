@@ -1,6 +1,14 @@
 import style from './page.module.css';
 import { MovieData } from '@/types';
 
+export async function generateStaticParams() {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/movie`);
+  const movies = await response.json();
+  return movies.map((movie: MovieData) => ({
+    id: movie.id.toString(),
+  }));
+}
+
 export default async function Movie({
   params,
 }: Readonly<{
@@ -22,7 +30,7 @@ export default async function Movie({
   return (
     <div className={style.container}>
       <div className={style.cover_img_container} style={{ backgroundImage: `url(${posterImgUrl})` }}>
-        <img src={posterImgUrl} />
+        <img src={posterImgUrl} alt={title} />
       </div>
 
       <div className={style.info}>

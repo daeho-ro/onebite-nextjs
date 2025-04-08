@@ -10,7 +10,9 @@ export default async function Search({
   }>;
 }>) {
   const { q } = await searchParams;
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/movie/search?q=${q}`);
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/movie/search?q=${q}`, {
+    cache: 'force-cache',
+  });
   const movies: MovieData[] = await response.json();
 
   if (!response.ok) {
