@@ -1,0 +1,5 @@
+.movieItemSkeleton {
+  width: 100%;
+  aspect-ratio: 7 / 10;
+  background-color: rgb(230, 230, 230);
+}
