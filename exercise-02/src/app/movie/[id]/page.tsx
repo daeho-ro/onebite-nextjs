@@ -23,7 +23,7 @@ async function MovieDetail({ movieId }: Readonly<{ movieId: string }>) {
   }
 
   return (
-    <div className={style.container}>
+    <section>
       <div className={style.cover_img_container} style={{ backgroundImage: `url(${posterImgUrl})` }}>
         <img src={posterImgUrl} alt={title} />
       </div>
@@ -43,7 +43,7 @@ async function MovieDetail({ movieId }: Readonly<{ movieId: string }>) {
           <div className={style.description}>{description}</div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 

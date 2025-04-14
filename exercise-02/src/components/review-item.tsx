@@ -1,7 +1,8 @@
 import { ReviewData } from '@/types';
 import style from './review-item.module.css';
+import ReviewItemDeleteButton from './review-item-delete-button';
 
-export default function ReviewItem({ content, author, createdAt }: Readonly<ReviewData>) {
+export default function ReviewItem({ id, content, author, createdAt, movieId }: Readonly<ReviewData>) {
   return (
     <div className={style.container}>
       <div className={style.top_container}>
@@ -9,7 +10,9 @@ export default function ReviewItem({ content, author, createdAt }: Readonly<Revi
         <div className={style.date}>{new Date(createdAt).toLocaleDateString('ko-KR')} 작성됨</div>
       </div>
       <div className={style.content}>{content}</div>
-      <div className={style.delete_btn}>🗑️ 리뷰 삭제하기</div>
+      <div className={style.delete_btn}>
+        <ReviewItemDeleteButton reviewId={id} movieId={movieId} />
+      </div>
     </div>
   );
 }
